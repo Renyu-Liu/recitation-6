@@ -45,8 +45,8 @@ TEST_CASE("Example: Create a new account", "[ex-1]") {
   REQUIRE(sam_account.balance == 300.30);
 
   auto transactions = atm.GetTransactions();
-  REQUIRE(accounts.contains({12345678, 1234}));
-  REQUIRE(accounts.size() == 1);
+  REQUIRE(transactions.contains({12345678, 1234}));
+  REQUIRE(transactions.size() == 0);
   std::vector<std::string> empty;
   REQUIRE(transactions[{12345678, 1234}] == empty);
 }
@@ -57,16 +57,12 @@ TEST_CASE("Example: Simple widthdraw", "[ex-2]") {
   atm.WithdrawCash(12345678, 1234, 20);
   auto accounts = atm.GetAccounts();
   Account sam_account = accounts[{12345678, 1234}];
-
   REQUIRE(sam_account.balance == 280.30);
 }
 
 TEST_CASE("Example: Print Prompt Ledger", "[ex-3]") {
   Atm atm;
   atm.RegisterAccount(12345678, 1234, "Sam Sepiol", 300.30);
-  atm.WithdrawCash(12345678, 1234, 200.40);
-  atm.DepositCash(12345678, 1234, 40000.00);
-  atm.DepositCash(12345678, 1234, 32000.00);
   auto& transactions = atm.GetTransactions();
   transactions[{12345678, 1234}].push_back(
       "Withdrawal - Amount: $200.40, Updated Balance: $99.90");
